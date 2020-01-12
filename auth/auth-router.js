@@ -12,7 +12,7 @@ const generateToken = userId => {
 router.post('/register', (req, res) => {
   // implement registration
   const user = req.body 
-  const hash = bycrpt.hashSync(user.password, 14)
+  const hash = bcrypt.hashSync(user.password, 14)
   user.password = hash
   db.newUser(user)
     .then((res) => {
@@ -30,7 +30,7 @@ router.post('/login', (req, res) => {
   const { username, password } = req.body
   db.findBy({username})
     .then((user) => {
-      if(user && bycrpt.compareSync(password, user.password)) {
+      if(user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user.id)
         res.status(200).json({
           message: `user ${user.username} has logged in!`,
